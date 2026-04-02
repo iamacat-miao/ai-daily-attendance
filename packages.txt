@@ -3,3 +3,4 @@ libgbm-dev
 libnss3
 libatk-bridge2.0-0
 libasound2
+playwright
