@@ -30,7 +30,10 @@ class TiebaPlatform(BasePlatform):
         """
         print(f"🕸️ [贴吧引擎] 正在尝试进入页面...")
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True, args=['--disable-blink-features=AutomationControlled', '--no-sandbox'])
+            browser = p.chromium.launch(headless=True, args=['--no-sandbox', 
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage',
+        '--disable-blink-features=AutomationControlled'])
             context = browser.new_context()
             context.add_cookies(parse_tieba_cookie_string(self.cookie_str))
             page = context.new_page()
@@ -93,7 +96,10 @@ class TiebaPlatform(BasePlatform):
         """自动签到（兼容：签到、已签到、连签n天）"""
         print(f"📍 [贴吧引擎] 正在执行签到检查...")
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True, args=['--disable-blink-features=AutomationControlled', '--no-sandbox'])
+            browser = p.chromium.launch(headless=True, args=['--no-sandbox', 
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage',
+        '--disable-blink-features=AutomationControlled'])
             context = browser.new_context()
             context.add_cookies(parse_tieba_cookie_string(self.cookie_str))
             page = context.new_page()
@@ -132,7 +138,10 @@ class TiebaPlatform(BasePlatform):
         """精准适配新版 Quill 编辑器与遮罩发布按钮"""
         print(f"🦾 [贴吧引擎] 正在精准执行发帖流程...")
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True, args=['--disable-blink-features=AutomationControlled', '--no-sandbox'])
+            browser = p.chromium.launch(headless=True, args=['--no-sandbox', 
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage',
+        '--disable-blink-features=AutomationControlled'])
             context = browser.new_context()
             context.add_cookies(parse_tieba_cookie_string(self.cookie_str))
             page = context.new_page()

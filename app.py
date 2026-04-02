@@ -14,21 +14,27 @@ from spiders.weibo import WeiboPlatform
 from spiders.tieba import TiebaPlatform
 # 引入 AI 大脑（请确保 main.py 中包含此函数）
 from weibo_ai import get_ai_gamer_comment 
-import subprocess
+import os
 import streamlit as st
 
-# --- 🚀 自动补全 Playwright 浏览器内核 ---
+# --- 🚀 强制安装 Playwright 浏览器 (内核补丁) ---
 @st.cache_resource
 def ensure_playwright_browsers():
     try:
-        # 尝试启动一次，如果失败则说明没安装内核
-        print("🔍 正在检查 Playwright 浏览器内核...")
-        subprocess.run(["playwright", "install", "chromium"], check=True)
-        print("✅ 浏览器内核已就绪")
+        # 1. 尝试直接导入并运行安装
+        import playwright
+        print("🔍 正在安装 Chromium 内核，请稍候（约1-2分钟）...")
+        # 使用 python -m playwright 方式更稳健
+        os.system("python -m playwright install chromium")
+        
+        # 2. 安装完成后，设置环境变量，告诉 Playwright 去哪找浏览器
+        # Streamlit 云端有时找不到默认路径，我们强制刷一下
+        os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "0" 
+        print("✅ 浏览器内核安装指令执行完毕")
     except Exception as e:
-        st.error(f"浏览器内核安装失败: {e}")
+        st.error(f"❌ 内核部署异常: {e}")
 
-# 立即执行安装检查
+# 立即执行
 ensure_playwright_browsers()
 st.set_page_config(page_title="多平台 AI 智能体", page_icon="🤖", layout="centered")
 

@@ -15,7 +15,10 @@ class WeiboPlatform(BasePlatform):
     def get_hot_topics(self):
             print(f"🕸️ [微博引擎] 启动无头浏览器...")
             with sync_playwright() as p:
-                browser = p.chromium.launch(headless=True, args=['--disable-blink-features=AutomationControlled', '--no-sandbox'])
+                browser = p.chromium.launch(headless=True, args=['--no-sandbox', 
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage',
+        '--disable-blink-features=AutomationControlled'])
                 context = browser.new_context()
                 context.add_cookies(parse_cookie_string(self.cookie_str))
                 page = context.new_page()
@@ -70,7 +73,10 @@ class WeiboPlatform(BasePlatform):
     def auto_checkin(self):
         print(f"📍 [微博引擎] 执行超话签到...")
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True, args=['--disable-blink-features=AutomationControlled', '--no-sandbox'])
+            browser = p.chromium.launch(headless=True, args=['--no-sandbox', 
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage',
+        '--disable-blink-features=AutomationControlled'])
             context = browser.new_context()
             
             try:
@@ -103,7 +109,10 @@ class WeiboPlatform(BasePlatform):
     def publish_post(self, text_to_publish):
         print(f"🦾 [微博引擎] 准备发帖...")
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True, args=['--disable-blink-features=AutomationControlled', '--no-sandbox'])
+            browser = p.chromium.launch(headless=True, args=['--no-sandbox', 
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage',
+        '--disable-blink-features=AutomationControlled'])
             context = browser.new_context()
             context.add_cookies(parse_cookie_string(self.cookie_str))
             page = context.new_page()
