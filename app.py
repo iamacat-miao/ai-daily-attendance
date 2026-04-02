@@ -14,8 +14,22 @@ from spiders.weibo import WeiboPlatform
 from spiders.tieba import TiebaPlatform
 # 引入 AI 大脑（请确保 main.py 中包含此函数）
 from weibo_ai import get_ai_gamer_comment 
+import subprocess
+import streamlit as st
 
-# ================= UI 界面设置 =================
+# --- 🚀 自动补全 Playwright 浏览器内核 ---
+@st.cache_resource
+def ensure_playwright_browsers():
+    try:
+        # 尝试启动一次，如果失败则说明没安装内核
+        print("🔍 正在检查 Playwright 浏览器内核...")
+        subprocess.run(["playwright", "install", "chromium"], check=True)
+        print("✅ 浏览器内核已就绪")
+    except Exception as e:
+        st.error(f"浏览器内核安装失败: {e}")
+
+# 立即执行安装检查
+ensure_playwright_browsers()
 st.set_page_config(page_title="多平台 AI 智能体", page_icon="🤖", layout="centered")
 
 st.title("🤖 多平台全自动 AI 智能体")
