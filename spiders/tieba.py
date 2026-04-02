@@ -95,6 +95,7 @@ class TiebaPlatform(BasePlatform):
     def auto_checkin(self):
         """自动签到（兼容：签到、已签到、连签n天）"""
         print(f"📍 [贴吧引擎] 正在执行签到检查...")
+        os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "/home/adminuser/.cache/ms-playwright"
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, args=['--no-sandbox', 
         '--disable-setuid-sandbox', 

@@ -15,26 +15,33 @@ from spiders.tieba import TiebaPlatform
 # 引入 AI 大脑（请确保 main.py 中包含此函数）
 from weibo_ai import get_ai_gamer_comment 
 import os
+import subprocess
 import streamlit as st
 
-# --- 🚀 强制安装 Playwright 浏览器 (内核补丁) ---
+# --- 🚀 针对 Python 3.14 + Streamlit Cloud 的内核修复 ---
 @st.cache_resource
 def ensure_playwright_browsers():
+    # 1. 强制设定浏览器下载路径到用户的家目录缓存，避开 venv 权限问题
+    os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "/home/adminuser/.cache/ms-playwright"
+    
+    # 获取当前 Python 解释器的路径，确保在同一个 venv 里操作
+    python_exe = os.sys.executable
+    
     try:
-        # 1. 尝试直接导入并运行安装
-        import playwright
-        print("🔍 正在安装 Chromium 内核，请稍候（约1-2分钟）...")
-        # 使用 python -m playwright 方式更稳健
-        os.system("python -m playwright install chromium")
-        
-        # 2. 安装完成后，设置环境变量，告诉 Playwright 去哪找浏览器
-        # Streamlit 云端有时找不到默认路径，我们强制刷一下
-        os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "0" 
-        print("✅ 浏览器内核安装指令执行完毕")
+        # 检查内核是否已存在
+        if not os.path.exists(os.environ["PLAYWRIGHT_BROWSERS_PATH"]):
+            with st.spinner("首次部署：正在为 Python 3.14 下载专用浏览器内核..."):
+                # 💡 关键：安装 chromium 及其最新的 headless-shell
+                subprocess.run([python_exe, "-m", "playwright", "install", "chromium", "--with-deps"], check=True)
+            st.success("✅ 浏览器环境已成功初始化")
+        else:
+            print("🚀 环境检测正常")
     except Exception as e:
-        st.error(f"❌ 内核部署异常: {e}")
+        st.error(f"❌ 内核安装失败: {e}")
+        # 最后的兜底尝试
+        os.system(f"{python_exe} -m playwright install chromium")
 
-# 立即执行
+# 必须在所有逻辑开始前运行
 ensure_playwright_browsers()
 st.set_page_config(page_title="多平台 AI 智能体", page_icon="🤖", layout="centered")
 

@@ -72,6 +72,7 @@ class WeiboPlatform(BasePlatform):
                     context.close()
     def auto_checkin(self):
         print(f"📍 [微博引擎] 执行超话签到...")
+        os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "/home/adminuser/.cache/ms-playwright"
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, args=['--no-sandbox', 
         '--disable-setuid-sandbox', 
