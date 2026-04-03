@@ -4,6 +4,7 @@ import time
 from streamlit import container
 from playwright.sync_api import sync_playwright
 from .base import BasePlatform
+from .playwright_env import configure_playwright_browser_path
 
 # 💡 辅助函数：百度系 Cookie 注入
 def parse_tieba_cookie_string(cookie_str):
@@ -95,7 +96,7 @@ class TiebaPlatform(BasePlatform):
     def auto_checkin(self):
         """自动签到（兼容：签到、已签到、连签n天）"""
         print(f"📍 [贴吧引擎] 正在执行签到检查...")
-        os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "/home/adminuser/.cache/ms-playwright"
+        configure_playwright_browser_path()
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, args=['--no-sandbox', 
         '--disable-setuid-sandbox', 

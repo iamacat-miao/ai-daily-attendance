@@ -1,5 +1,6 @@
 # spiders/weibo.py
 from .base import BasePlatform
+from .playwright_env import configure_playwright_browser_path
 from playwright.sync_api import sync_playwright
 
 # 辅助函数可以放在类外面
@@ -72,7 +73,7 @@ class WeiboPlatform(BasePlatform):
                     context.close()
     def auto_checkin(self):
         print(f"📍 [微博引擎] 执行超话签到...")
-        os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "/home/adminuser/.cache/ms-playwright"
+        configure_playwright_browser_path()
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, args=['--no-sandbox', 
         '--disable-setuid-sandbox', 
