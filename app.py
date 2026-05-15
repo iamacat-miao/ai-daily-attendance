@@ -44,7 +44,7 @@ def clean_json_block(text):
 ensure_playwright_browsers()
 
 st.set_page_config(page_title="多平台 AI 智能体", page_icon="🤖", layout="centered")
-st.title("🤖 多平台全自动 AI 智能体")
+st.title("🤖 多平台全自动AI智能体")
 st.markdown("支持微博超话、百度贴吧的自动签到、内容抓取、AI 生成和自动发帖。")
 
 st.divider()
